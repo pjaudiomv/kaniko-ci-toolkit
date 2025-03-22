@@ -16,12 +16,14 @@ ARG ORAS_VERSION=1.2.2
 ARG COSIGN_VERSION=2.4.3
 # https://github.com/estesp/manifest-tool/releases
 ARG MANIFEST_TOOL_VERSION=2.1.9
+ARG TARGETARCH=arm64
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
         build-essential \
         wget \
         unzip \
+        ca-certificates \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /usr/local/src
@@ -76,7 +78,7 @@ RUN ARCH=$(if [ "$TARGETARCH" = "arm64" ] || [ "$TARGETARCH" = "aarch64" ]; then
     rm -rf /tmp/*
 
 RUN ARCH=$(if [ "$TARGETARCH" = "arm64" ] || [ "$TARGETARCH" = "aarch64" ]; then echo "arm64"; else echo "amd64"; fi) && \
-    wget --progress=dot:giga "https://github.com/sigstore/cosign/releases/v${COSIGN_VERSION}/download/cosign-linux-${ARCH}" -O /usr/bin/cosign && \
+    wget --progress=dot:giga "https://github.com/sigstore/cosign/releases/download/v${COSIGN_VERSION}/cosign-linux-${ARCH}" -O /usr/bin/cosign && \
     chmod +x /usr/bin/cosign
 
 # Crane
