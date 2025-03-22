@@ -18,7 +18,7 @@ You can pull the image from GitHub Container Registry:
 docker pull ghcr.io/pjaudiomv/kaniko-ci-toolkit:latest
 
 # Or pull a specific version by tag
-docker pull ghcr.io/pjaudiomv/kaniko-ci-toolkit:v1.0.0
+docker pull ghcr.io/pjaudiomv/kaniko-ci-toolkit:1.0.0
 ```
 
 ## Usage

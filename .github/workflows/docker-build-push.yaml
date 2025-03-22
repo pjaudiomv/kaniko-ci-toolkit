@@ -2,8 +2,8 @@ name: Build and Push Docker Image
 
 on:
   push:
-    branches: ['main']
     tags: ['*']
+  workflow_dispatch:
 
 permissions:
   contents: read
