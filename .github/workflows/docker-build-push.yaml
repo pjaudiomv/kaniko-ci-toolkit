@@ -2,7 +2,9 @@ name: Build and Push Docker Image
 
 on:
   push:
-    tags: ['*']
+    tags:
+      - '*'
+      - '!v*'
   workflow_dispatch:
 
 permissions:
