@@ -15,8 +15,6 @@ jobs:
 #        run: pwd
     container:
       image: ghcr.io/pjaudiomv/kaniko-ci-toolkit:1.0.0
-      volumes:
-        - /__w/kaniko-ci-toolkit/kaniko-ci-toolkit:/repo
     steps:
-      - name: Show repo contentss
-        run: pwd && ls -la /repo
+      - name: Show repo contents
+        run: pwd && ls -lta
