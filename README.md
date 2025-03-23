@@ -104,3 +104,27 @@ All tools are available in the `/busybox` directory:
 ```
 
 Kaniko executor is available at `/kaniko/executor`.
+
+## Development
+
+### CI/CD Workflows
+
+This project uses GitHub Actions for continuous integration and delivery:
+
+1. **Test Build Workflow** - Runs on pull requests to verify that the Dockerfile builds successfully:
+   - Performs multi-architecture builds (amd64, arm64)
+   - Runs basic tests to verify tool functionality
+   - Ensures changes don't break the build process
+
+2. **Build and Push Workflow** - Runs on pushes to main branch and tags:
+   - Builds multi-architecture images
+   - Pushes to both GitHub Container Registry and Docker Hub
+   - Creates proper tags for versioning
+
+### Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## License
+
+This project is distributed under the MIT License. See the LICENSE file for more information.

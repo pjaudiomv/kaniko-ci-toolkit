@@ -16,6 +16,8 @@ ARG ORAS_VERSION=1.2.2
 ARG COSIGN_VERSION=2.4.3
 # renovate: depName=estesp/manifest-tool
 ARG MANIFEST_TOOL_VERSION=2.1.9
+# renovate: depName=google/go-containerregistry
+ARG CRANE_VERSION=0.20.3
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
@@ -76,20 +78,21 @@ RUN ARCH=$(if [ "$TARGETARCH" = "arm64" ] || [ "$TARGETARCH" = "aarch64" ]; then
     chmod +x /usr/bin/oras && \
     rm -rf /tmp/*
 
+RUN ARCH=$(if [ "$TARGETARCH" = "arm64" ] || [ "$TARGETARCH" = "aarch64" ]; then echo "arm64"; else echo "x86_64"; fi) && \
+    wget --progress=dot:giga "https://github.com/google/go-containerregistry/releases/download/v${CRANE_VERSION}/go-containerregistry_Linux_${ARCH}.tar.gz" -O /tmp/crane.tar.gz && \
+    tar xzf /tmp/crane.tar.gz -C /tmp && \
+    mv /tmp/crane /usr/bin/crane && \
+    chmod +x /usr/bin/crane && \
+    rm -rf /tmp/*
+
 RUN ARCH=$(if [ "$TARGETARCH" = "arm64" ] || [ "$TARGETARCH" = "aarch64" ]; then echo "arm64"; else echo "amd64"; fi) && \
     wget --progress=dot:giga "https://github.com/sigstore/cosign/releases/download/v${COSIGN_VERSION}/cosign-linux-${ARCH}" -O /usr/bin/cosign && \
     chmod +x /usr/bin/cosign
 
-# Crane
-FROM golang:1.23.7 AS crane
-# renovate: depName=google/go-containerregistry
-ARG CRANE_VERSION=0.20.3
-RUN go install "github.com/google/go-containerregistry/cmd/crane@v${CRANE_VERSION}"
-
 # Kaniko
 FROM gcr.io/kaniko-project/executor:v1.23.2-debug
 
-COPY --from=crane /go/bin/crane /busybox/crane
+COPY --from=debian /usr/bin/crane /busybox/crane
 COPY --from=debian /usr/bin/jq /busybox/jq
 COPY --from=debian /usr/bin/vault /busybox/vault
 COPY --from=debian /usr/bin/manifest-tool /busybox/manifest-tool
