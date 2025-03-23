@@ -1,0 +1,76 @@
+name: Example Multi-Arch Kaniko Build
+
+on:
+  push:
+    tags: ['v*']
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    outputs:
+      tag: ${{ steps.set-tag.outputs.tag }}
+    steps:
+      - name: Determine tag
+        id: set-tag
+        run: |
+          if [[ "${GITHUB_REF_TYPE}" == "tag" ]]; then
+            echo "tag=${GITHUB_REF_NAME}" >> $GITHUB_OUTPUT
+          elif [[ "${GITHUB_REF_NAME}" == "${{ github.event.repository.default_branch }}" ]]; then
+            echo "tag=latest" >> $GITHUB_OUTPUT
+          else
+            echo "tag=${GITHUB_SHA::7}" >> $GITHUB_OUTPUT
+          fi
+
+  build:
+    needs: prepare
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-24.04
+            arch: amd64
+          - os: ubuntu-24.04-arm
+            arch: arm64
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup docker auth config
+        run: |
+          mkdir -p .docker
+          echo "{\"auths\":{\"https://index.docker.io/v1/\":{\"auth\":\"$(echo -n "${{ secrets.DOCKERHUB_USERNAME }}:${{ secrets.DOCKERHUB_TOKEN }}" | base64)\"}}}" > .docker/config.json
+
+      - name: Build and push ${{ matrix.arch }} image
+        run: |
+          docker run --rm \
+            -v "$PWD:/workspace" \
+            -v "$PWD/.docker:/kaniko/.docker" \
+            -w /workspace \
+            ghcr.io/pjaudiomv/kaniko-ci-toolkit:1.0.0 \
+            /kaniko/executor \
+              --dockerfile=/workspace/nginx.Dockerfile \
+              --context=/workspace \
+              --cache=true \
+              --destination "docker.io/pjaudiomv/nginx-test:${{ needs.prepare.outputs.tag }}-${{ matrix.arch }}"
+
+  manifest:
+    name: Create Multi-Arch Manifest
+    runs-on: ubuntu-latest
+    needs: [prepare, build]
+    steps:
+      - name: Setup docker auth config
+        run: |
+          mkdir -p .docker
+          echo "{\"auths\":{\"https://index.docker.io/v1/\":{\"auth\":\"$(echo -n "${{ secrets.DOCKERHUB_USERNAME }}:${{ secrets.DOCKERHUB_TOKEN }}" | base64)\"}}}" > .docker/config.json
+
+      - name: Push Multi-Arch Manifest
+        run: |
+          docker run --rm \
+            -v "$PWD:/workspace" \
+            -v "$PWD/.docker:/kaniko/.docker" \
+            -w /workspace \
+            ghcr.io/pjaudiomv/kaniko-ci-toolkit:1.0.0 \
+            /busybox/manifest-tool push from-args \
+              --platforms linux/amd64,linux/arm64 \
+              --template "docker.io/pjaudiomv/nginx-test:${{ needs.prepare.outputs.tag }}-ARCH" \
+              --target "docker.io/pjaudiomv/nginx-test:${{ needs.prepare.outputs.tag }}"
