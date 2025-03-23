@@ -10,5 +10,7 @@ jobs:
       matrix:
         os: [ ubuntu-24.04, ubuntu-24.04-arm ]    
     runs-on: ${{ matrix.os }}
+    container:
+      image: ghcr.io/pjaudiomv/kaniko-ci-toolkit:1.0.0
     steps:
-      - run: uname -m
+      - run: uname -m && /kaniko/executor version
