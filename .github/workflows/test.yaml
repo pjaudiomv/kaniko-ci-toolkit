@@ -19,4 +19,9 @@ jobs:
         uses: actions/checkout@v4
 
       - name: build ${{ matrix.arch }}
-        run: uname -m
+        run: |
+          docker run --rm -v "$PWD:/busybox/workspace" -w /busybox/workspace kaniko-ci-toolkit:test \
+            /kaniko/executor \
+              --dockerfile=/busybox/workspace/Dockerfile \
+              --destination=local \
+              --no-push
