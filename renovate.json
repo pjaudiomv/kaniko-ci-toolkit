@@ -3,11 +3,19 @@
   "extends": [
     "config:recommended"
   ],
-  "schedule": ["after 8am on Monday"],
+  "schedule": [
+    "after 8am on Monday"
+  ],
   "packageRules": [
     {
-      "updateTypes": ["major", "minor", "patch"],
-      "schedule": ["after 8am on Monday"]
+      "matchUpdateTypes": [
+        "major",
+        "minor",
+        "patch"
+      ],
+      "schedule": [
+        "after 8am on Monday"
+      ]
     }
   ]
 }
