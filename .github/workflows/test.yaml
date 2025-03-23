@@ -20,7 +20,7 @@ jobs:
 
       - name: build ${{ matrix.arch }}
         run: |
-          docker run --rm -v "$PWD:/busybox/workspace" -w /busybox/workspace kaniko-ci-toolkit:test \
+          docker run --rm -v "$PWD:/busybox/workspace" -w /busybox/workspace ghcr.io/pjaudiomv/kaniko-ci-toolkit:1.0.0 \
             /kaniko/executor \
               --dockerfile=/busybox/workspace/Dockerfile \
               --destination=local \
