@@ -18,6 +18,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Set up Kaniko Auth Config
+        run: |
+          AUTH=$(echo -n "${{ secrets.DOCKERHUB_USERNAME }}:${{ secrets.DOCKERHUB_TOKEN }}" | base64)
+          mkdir -p .docker
+          echo "{\"auths\":{\"https://index.docker.io/v1/\":{\"auth\":\"$AUTH\"}}}" > .docker/config.json
+
       - name: Build ${{ matrix.arch }}
         run: |
           if [[ "${GITHUB_REF_TYPE}" == "tag" ]]; then
@@ -32,9 +38,9 @@ jobs:
 
           docker run --rm \
             -v "$PWD:/busybox/workspace" \
+            -v "$PWD/.docker:/kaniko/.docker" \
             -w /busybox/workspace \
             ghcr.io/pjaudiomv/kaniko-ci-toolkit:1.0.0 \
             /kaniko/executor \
-              --dockerfile=/busybox/workspace/Dockerfile \
-              --destination "ghcr.io/pjaudiomv/kaniko-ci-toolkit:$tag" \
-              --no-push
+              --dockerfile=/busybox/workspace/nginx.Dockerfile \
+              --destination "docker.io/pjaudiomv/nginx-test:$tag-${{ matrix.arch }}"
