@@ -8,14 +8,17 @@ jobs:
   test:
     strategy:
       matrix:
-        version: [amd64, arm64]
-        os: [ ubuntu-24.04, ubuntu-24.04-arm ]
+        include:
+          - os: ubuntu-24.04
+            arch: amd64
+          - os: ubuntu-24.04-arm
+            arch: arm64
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: build ${{ matrix.version }}
+      - name: build ${{ matrix.arch }}
         run: |
           docker run -it -v "$PWD:/busybox/workspace" -w /busybox/workspace kaniko-ci-toolkit:test \                                         <aws:rm-crystal-gov>
             /kaniko/executor \
