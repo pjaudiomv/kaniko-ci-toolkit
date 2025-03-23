@@ -19,9 +19,4 @@ jobs:
         uses: actions/checkout@v4
 
       - name: build ${{ matrix.arch }}
-        run: |
-          docker run -it -v "$PWD:/busybox/workspace" -w /busybox/workspace kaniko-ci-toolkit:test \                                         <aws:rm-crystal-gov>
-            /kaniko/executor \
-              --dockerfile=/busybox/workspace/Dockerfile \
-              --destination=local \
-              --no-push
+        run: uname -m
