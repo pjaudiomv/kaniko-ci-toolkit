@@ -18,10 +18,23 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: build ${{ matrix.arch }}
+      - name: Build ${{ matrix.arch }}
         run: |
-          docker run --rm -v "$PWD:/busybox/workspace" -w /busybox/workspace ghcr.io/pjaudiomv/kaniko-ci-toolkit:1.0.0 \
+          if [[ "${GITHUB_REF_TYPE}" == "tag" ]]; then
+            tag="${GITHUB_REF_NAME}"
+          elif [[ "${GITHUB_REF_NAME}" == "${{ github.event.repository.default_branch }}" ]]; then
+            tag="latest"
+          else
+            tag="${GITHUB_SHA::7}"
+          fi
+
+          echo "Using tag: $tag"
+
+          docker run --rm \
+            -v "$PWD:/busybox/workspace" \
+            -w /busybox/workspace \
+            ghcr.io/pjaudiomv/kaniko-ci-toolkit:1.0.0 \
             /kaniko/executor \
               --dockerfile=/busybox/workspace/Dockerfile \
-              --destination=local \
+              --destination "ghcr.io/pjaudiomv/kaniko-ci-toolkit:$tag" \
               --no-push
