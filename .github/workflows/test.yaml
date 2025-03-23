@@ -12,8 +12,8 @@ jobs:
     runs-on: ${{ matrix.os }}
     container:
       image: ghcr.io/pjaudiomv/kaniko-ci-toolkit:1.0.0
+      volumes:
+        - /__w/pjaudiomv_kaniko-ci-toolkit/kaniko-ci-toolkit:/repo
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - run: uname -m && /kaniko/executor version
+      - name: Show repo contents
+        run: ls -la /repo
