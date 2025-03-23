@@ -55,31 +55,31 @@ jobs:
           echo "Testing tool availability..."
           
           # Test specific tools
-          echo "Testing JQ..."
+            
           docker run --rm kaniko-ci-toolkit:test /busybox/jq --version
           
-          echo "Testing Make..."
+          echo -e "\nTesting Make..."
           docker run --rm kaniko-ci-toolkit:test /busybox/make --version
           
-          echo "Testing Bash..."
+          echo -e "\nTesting Bash..."
           docker run --rm kaniko-ci-toolkit:test /busybox/bash --version
           
-          echo "Testing Crane..."
+          echo -e "\nTesting Crane..."
           docker run --rm kaniko-ci-toolkit:test /busybox/crane version
           
-          echo "Testing Vault..."
+          echo -e "\nTesting Vault..."
           docker run --rm kaniko-ci-toolkit:test /busybox/vault version
           
-          echo "Testing Manifest-Tool..."
+          echo -e "\nTesting Manifest-Tool..."
           docker run --rm kaniko-ci-toolkit:test /busybox/manifest-tool --version
           
-          echo "Testing Cosign..."
+          echo -e "\nTesting Cosign..."
           docker run --rm kaniko-ci-toolkit:test /busybox/cosign version
           
-          echo "Testing Oras..."
+          echo -e "\nTesting Oras..."
           docker run --rm kaniko-ci-toolkit:test /busybox/oras version
           
-          echo "Testing Kaniko executor..."
+          echo -e "\nTesting Kaniko executor..."
           docker run --rm kaniko-ci-toolkit:test /kaniko/executor version
           
-          echo "All tests passed!"
+          echo -e "\nAll tests passed!"
