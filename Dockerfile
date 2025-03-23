@@ -6,17 +6,16 @@ FROM debian:12.10 AS debian
 ARG MAKE_VERSION=4.4
 # https://ftp.gnu.org/gnu/bash/
 ARG BASH_VERSION=5.2
-# https://github.com/jqlang/jq/releases
+# renovate: depName=jqlang/jq
 ARG JQ_VERSION=1.7.1
-# https://github.com/hashicorp/vault/releases
+# renovate: depName=hashicorp/vault
 ARG VAULT_VERSION=1.19.0
-# https://github.com/oras-project/orasgithub.com/oras-project/oras
+# renovate: depName=oras-project/oras
 ARG ORAS_VERSION=1.2.2
-# https://github.com/sigstore/cosign/releases
+# renovate: depName=sigstore/cosign
 ARG COSIGN_VERSION=2.4.3
-# https://github.com/estesp/manifest-tool/releases
+# renovate: depName=estesp/manifest-tool
 ARG MANIFEST_TOOL_VERSION=2.1.9
-ARG TARGETARCH=arm64
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
@@ -83,7 +82,7 @@ RUN ARCH=$(if [ "$TARGETARCH" = "arm64" ] || [ "$TARGETARCH" = "aarch64" ]; then
 
 # Crane
 FROM golang:1.23.7 AS crane
-# https://github.com/google/go-containerregistry/releases
+# renovate: depName=google/go-containerregistry
 ARG CRANE_VERSION=0.20.3
 RUN go install "github.com/google/go-containerregistry/cmd/crane@v${CRANE_VERSION}"
 
@@ -98,7 +97,11 @@ COPY --from=debian /usr/bin/cosign /busybox/cosign
 COPY --from=debian /usr/bin/oras /busybox/oras
 COPY --from=debian /usr/local/bin/make /busybox/make
 COPY --from=debian /usr/local/bin/bash /busybox/bash
+COPY --from=debian /etc/ssl/certs/ca-certificates.crt /kaniko/ssl/certs/ca-certificates.crt
 
 RUN ["/busybox/ln", "-s", "/busybox/bash", "/bin/bash"]
 ARG PATH="/busybox:/bin:${PATH}"
 ENTRYPOINT []
+
+LABEL repository="https://github.com/pjaudiomv/kaniko-ci-toolkit" \
+      maintainer="Patrick Joyce <pjaudiomv@gmail.com>"
