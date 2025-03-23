@@ -11,7 +11,9 @@ A Kaniko-powered CI build image preloaded with essential container tools: Crane,
 
 ## Getting the Image
 
-You can pull the image from GitHub Container Registry:
+You can pull the image from either GitHub Container Registry or Docker Hub:
+
+### GitHub Container Registry
 
 ```bash
 # Pull the latest version
@@ -21,13 +23,25 @@ docker pull ghcr.io/pjaudiomv/kaniko-ci-toolkit:latest
 docker pull ghcr.io/pjaudiomv/kaniko-ci-toolkit:1.0.0
 ```
 
+### Docker Hub
+
+```bash
+# Pull the latest version
+docker pull pjaudiomv/kaniko-ci-toolkit:latest
+
+# Or pull a specific version by tag
+docker pull pjaudiomv/kaniko-ci-toolkit:1.0.0
+```
+
 ## Usage
 
 ### Local Development
 
 ```bash
-# Run the container with interactive shell
+# Run the container with interactive shell (GitHub Container Registry)
 docker run --rm -it ghcr.io/pjaudiomv/kaniko-ci-toolkit:latest /busybox/sh
+# Or using Docker Hub
+docker run --rm -it pjaudiomv/kaniko-ci-toolkit:latest /busybox/sh
 
 # Mount your local directory to build a container
 docker run --rm -it \
@@ -44,7 +58,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
     container:
+      # Use either GitHub Container Registry
       image: ghcr.io/pjaudiomv/kaniko-ci-toolkit:latest
+      # Or Docker Hub
+      # image: pjaudiomv/kaniko-ci-toolkit:latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -53,7 +70,7 @@ jobs:
         run: |
           /kaniko/executor \
             --dockerfile=Dockerfile \
-            --context=$(pwd) \
+            --context=dir://$(pwd) \
             --destination=ghcr.io/username/repo:latest
 ```
 

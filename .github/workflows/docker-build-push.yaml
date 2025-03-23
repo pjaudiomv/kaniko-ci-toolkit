@@ -29,12 +29,13 @@ jobs:
       - name: Docker meta
         id: meta
         uses: docker/metadata-action@v5
+        env:
+          DOCKER_METADATA_ANNOTATIONS_LEVELS: index
         with:
           images: |
             ghcr.io/pjaudiomv/kaniko-ci-toolkit
             pjaudiomv/kaniko-ci-toolkit
           tags: |
-            type=schedule
             type=semver,pattern={{version}}
             type=sha
           labels: |
