@@ -17,4 +17,4 @@ jobs:
       image: ghcr.io/pjaudiomv/kaniko-ci-toolkit:1.0.0
     steps:
       - name: Show repo contents
-        run: pwd && ls -lta
+        run: pwd && ls -lta /kaniko
