@@ -1,0 +1,14 @@
+name: Multi-Arch Kaniko Build
+
+on:
+  push:
+    branches: ['pj/test']
+
+jobs:
+  test:
+    strategy:
+      matrix:
+        os: [ ubuntu-24.04, ubuntu-24.04-arm ]    
+    runs-on: ${{ matrix.os }}
+    steps:
+      - run: uname -m
