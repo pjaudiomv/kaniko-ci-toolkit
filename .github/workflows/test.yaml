@@ -10,13 +10,13 @@ jobs:
       matrix:
         os: [ ubuntu-24.04, ubuntu-24.04-arm ]    
     runs-on: ${{ matrix.os }}
-    steps:
-      - name: Show wd
-        run: pwd
-#    container:
-#      image: ghcr.io/pjaudiomv/kaniko-ci-toolkit:1.0.0
-#      volumes:
-#        - /__w/pjaudiomv_kaniko-ci-toolkit/kaniko-ci-toolkit:/repo
 #    steps:
-#      - name: Show repo contents
-#        run: ls -la /repo
+#      - name: Show wd
+#        run: pwd
+    container:
+      image: ghcr.io/pjaudiomv/kaniko-ci-toolkit:1.0.0
+      volumes:
+        - /home/runner/work/kaniko-ci-toolkit/kaniko-ci-toolkit:/repo
+    steps:
+      - name: Show repo contents
+        run: pwd && ls -la /repo
