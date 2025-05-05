@@ -15,7 +15,7 @@ ARG ORAS_VERSION=1.2.2
 # renovate: depName=sigstore/cosign
 ARG COSIGN_VERSION=2.4.3
 # renovate: depName=estesp/manifest-tool
-ARG MANIFEST_TOOL_VERSION=2.1.9
+ARG MANIFEST_TOOL_VERSION=2.2.0
 # renovate: depName=google/go-containerregistry
 ARG CRANE_VERSION=0.20.3
 
