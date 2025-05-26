@@ -90,7 +90,7 @@ RUN ARCH=$(if [ "$TARGETARCH" = "arm64" ] || [ "$TARGETARCH" = "aarch64" ]; then
     chmod +x /usr/bin/cosign
 
 # Kaniko
-FROM gcr.io/kaniko-project/executor:v1.23.2-debug
+FROM gcr.io/kaniko-project/executor:v1.24.0-debug
 
 COPY --from=debian /usr/bin/crane /busybox/crane
 COPY --from=debian /usr/bin/jq /busybox/jq
