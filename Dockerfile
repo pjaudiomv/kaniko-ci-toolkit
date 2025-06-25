@@ -17,7 +17,7 @@ ARG COSIGN_VERSION=2.5.0
 # renovate: depName=estesp/manifest-tool
 ARG MANIFEST_TOOL_VERSION=2.2.0
 # renovate: depName=google/go-containerregistry
-ARG CRANE_VERSION=0.20.5
+ARG CRANE_VERSION=0.20.6
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
