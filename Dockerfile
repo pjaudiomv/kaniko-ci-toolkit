@@ -5,9 +5,9 @@ FROM debian:12.11 AS debian
 # https://ftp.gnu.org/gnu/make/
 ARG MAKE_VERSION=4.4
 # https://ftp.gnu.org/gnu/bash/
-ARG BASH_VERSION=5.2
+ARG BASH_VERSION=5.3
 # renovate: depName=jqlang/jq
-ARG JQ_VERSION=1.7.1
+ARG JQ_VERSION=1.8.1
 # renovate: depName=hashicorp/vault
 ARG VAULT_VERSION=1.20.0
 # renovate: depName=oras-project/oras
@@ -90,7 +90,7 @@ RUN ARCH=$(if [ "$TARGETARCH" = "arm64" ] || [ "$TARGETARCH" = "aarch64" ]; then
     chmod +x /usr/bin/cosign
 
 # Kaniko
-FROM gcr.io/kaniko-project/executor:v1.24.0-debug
+FROM docker.io/martizih/kaniko:v1.25.0-debug
 
 COPY --from=debian /usr/bin/crane /busybox/crane
 COPY --from=debian /usr/bin/jq /busybox/jq
