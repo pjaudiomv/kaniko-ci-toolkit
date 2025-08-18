@@ -1,6 +1,6 @@
 # Kaniko Image with
 #   - Crane, Cosign, Manifest-Tool, Oras, Make, JQ, Bash, Vault
-FROM debian:12.11 AS debian
+FROM debian:13.0 AS debian
 
 # https://ftp.gnu.org/gnu/make/
 ARG MAKE_VERSION=4.4
