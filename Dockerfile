@@ -1,22 +1,23 @@
 # Kaniko Image with
 #   - Crane, Cosign, Manifest-Tool, Oras, Make, JQ, Bash, Vault
+# renovate: datasource=docker depName=debian
 FROM debian:13.0 AS debian
 
 # https://ftp.gnu.org/gnu/make/
 ARG MAKE_VERSION=4.4
 # https://ftp.gnu.org/gnu/bash/
 ARG BASH_VERSION=5.3
-# renovate: depName=jqlang/jq
+# renovate: datasource=github-releases depName=jqlang/jq
 ARG JQ_VERSION=1.8.1
-# renovate: depName=hashicorp/vault
+# renovate: datasource=github-releases depName=hashicorp/vault
 ARG VAULT_VERSION=1.20.2
-# renovate: depName=oras-project/oras
+# renovate: datasource=github-releases depName=oras-project/oras
 ARG ORAS_VERSION=1.2.3
-# renovate: depName=sigstore/cosign
+# renovate: datasource=github-releases depName=sigstore/cosign
 ARG COSIGN_VERSION=2.5.3
-# renovate: depName=estesp/manifest-tool
+# renovate: datasource=github-releases depName=estesp/manifest-tool
 ARG MANIFEST_TOOL_VERSION=2.2.0
-# renovate: depName=google/go-containerregistry
+# renovate: datasource=github-releases depName=google/go-containerregistry
 ARG CRANE_VERSION=0.20.6
 
 RUN apt-get update \
@@ -90,6 +91,7 @@ RUN ARCH=$(if [ "$TARGETARCH" = "arm64" ] || [ "$TARGETARCH" = "aarch64" ]; then
     chmod +x /usr/bin/cosign
 
 # Kaniko
+# renovate: datasource=docker depName=martizih/kaniko
 FROM docker.io/martizih/kaniko:v1.25.3-debug
 
 COPY --from=debian /usr/bin/crane /busybox/crane
