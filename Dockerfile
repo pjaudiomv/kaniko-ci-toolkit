@@ -1,7 +1,7 @@
 # Kaniko Image with
 #   - Crane, Cosign, Manifest-Tool, Oras, Make, JQ, Bash, Vault
 # renovate: datasource=docker depName=debian
-FROM debian:13.0 AS debian
+FROM debian:13.1 AS debian
 
 # https://ftp.gnu.org/gnu/make/
 ARG MAKE_VERSION=4.4
