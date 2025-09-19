@@ -92,7 +92,7 @@ RUN ARCH=$(if [ "$TARGETARCH" = "arm64" ] || [ "$TARGETARCH" = "aarch64" ]; then
 
 # Kaniko
 # renovate: datasource=docker depName=martizih/kaniko
-FROM docker.io/martizih/kaniko:v1.25.3-debug
+FROM docker.io/martizih/kaniko:v1.25.5-debug
 
 COPY --from=debian /usr/bin/crane /busybox/crane
 COPY --from=debian /usr/bin/jq /busybox/jq
