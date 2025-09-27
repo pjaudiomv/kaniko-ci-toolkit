@@ -16,7 +16,7 @@ ARG ORAS_VERSION=1.3.0
 # renovate: datasource=github-releases depName=sigstore/cosign
 ARG COSIGN_VERSION=2.6.0
 # renovate: datasource=github-releases depName=estesp/manifest-tool
-ARG MANIFEST_TOOL_VERSION=2.2.
+ARG MANIFEST_TOOL_VERSION=2.2.1
 # renovate: datasource=github-releases depName=google/go-containerregistry
 ARG CRANE_VERSION=0.20.6
 
