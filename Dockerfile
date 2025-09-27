@@ -20,6 +20,8 @@ ARG MANIFEST_TOOL_VERSION=2.2.1
 # renovate: datasource=github-releases depName=google/go-containerregistry
 ARG CRANE_VERSION=0.20.6
 
+ARG TARGETARCH
+
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
         build-essential \
@@ -105,7 +107,7 @@ COPY --from=debian /usr/local/bin/bash /busybox/bash
 COPY --from=debian /etc/ssl/certs/ca-certificates.crt /kaniko/ssl/certs/ca-certificates.crt
 
 RUN ["/busybox/ln", "-s", "/busybox/bash", "/bin/bash"]
-ARG PATH="/busybox:/bin:${PATH}"
+ENV PATH="/busybox:/bin:${PATH}"
 ENTRYPOINT []
 
 LABEL repository="https://github.com/pjaudiomv/kaniko-ci-toolkit" \
