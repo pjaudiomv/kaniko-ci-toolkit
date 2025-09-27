@@ -10,13 +10,13 @@ ARG BASH_VERSION=5.3
 # renovate: datasource=github-releases depName=jqlang/jq
 ARG JQ_VERSION=1.8.1
 # renovate: datasource=github-releases depName=hashicorp/vault
-ARG VAULT_VERSION=1.20.2
+ARG VAULT_VERSION=1.20.4
 # renovate: datasource=github-releases depName=oras-project/oras
-ARG ORAS_VERSION=1.2.3
+ARG ORAS_VERSION=1.3.0
 # renovate: datasource=github-releases depName=sigstore/cosign
-ARG COSIGN_VERSION=2.5.3
+ARG COSIGN_VERSION=2.6.0
 # renovate: datasource=github-releases depName=estesp/manifest-tool
-ARG MANIFEST_TOOL_VERSION=2.2.0
+ARG MANIFEST_TOOL_VERSION=2.2.
 # renovate: datasource=github-releases depName=google/go-containerregistry
 ARG CRANE_VERSION=0.20.6
 
