@@ -1,7 +1,7 @@
 # Kaniko Image with
 #   - Crane, Cosign, Manifest-Tool, Oras, Make, JQ, Bash, Vault
 # renovate: datasource=docker depName=debian
-FROM debian:13.1 AS debian
+FROM debian:13.1-slim AS debian
 
 # https://ftp.gnu.org/gnu/make/
 ARG MAKE_VERSION=4.4
@@ -14,7 +14,7 @@ ARG VAULT_VERSION=1.20.4
 # renovate: datasource=github-releases depName=oras-project/oras
 ARG ORAS_VERSION=1.3.0
 # renovate: datasource=github-releases depName=sigstore/cosign
-ARG COSIGN_VERSION=2.6.0
+ARG COSIGN_VERSION=3.0.1
 # renovate: datasource=github-releases depName=estesp/manifest-tool
 ARG MANIFEST_TOOL_VERSION=2.2.1
 # renovate: datasource=github-releases depName=google/go-containerregistry
@@ -110,5 +110,6 @@ RUN ["/busybox/ln", "-s", "/busybox/bash", "/bin/bash"]
 ENV PATH="/busybox:/bin:${PATH}"
 ENTRYPOINT []
 
-LABEL repository="https://github.com/pjaudiomv/kaniko-ci-toolkit" \
+LABEL org.opencontainers.image.source="https://github.com/pjaudiomv/kaniko-ci-toolkit" \
+      org.opencontainers.image.description="Kaniko with Crane, Cosign, Manifest-Tool, ORAS, Make, jq, Bash, Vault" \
       maintainer="Patrick Joyce <pjaudiomv@gmail.com>"
