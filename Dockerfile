@@ -7,7 +7,7 @@ FROM debian:13.1-slim AS debian
 # renovate: depName=mirror/make
 ARG MAKE_VERSION=4.4.1
 # https://savannah.gnu.org/git/?group=bash
-# renovate: depName=bminor/bash
+# renovate: datasource=github-tags depName=bminor/bash extractVersion=^bash-(?<version>.*)$
 ARG BASH_VERSION=5.3
 # renovate: depName=jqlang/jq
 ARG JQ_VERSION=1.8.1

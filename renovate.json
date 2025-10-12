@@ -31,12 +31,11 @@
     },
     {
       "customType": "regex",
-      "description": "Update with custom datasource",
+      "description": "Update GitHub tags with prefix stripping",
       "managerFilePatterns": ["/^Dockerfile$/"],
       "matchStrings": [
-        "# renovate: datasource=(?<datasource>.*?) depName=(?<depName>.*?)(?: versioning=(?<versioning>.*?))?\\nARG .*?_VERSION=(?<currentValue>.*?)\\n"
-      ],
-      "versioningTemplate": "{{#if versioning}}{{{versioning}}}{{else}}semver{{/if}}"
+        "# renovate: datasource=(?<datasource>.*?) depName=(?<depName>.*?) extractVersion=(?<extractVersion>.*?)\\nARG .*?_VERSION=(?<currentValue>.*?)\\n"
+      ]
     }
   ]
 }
