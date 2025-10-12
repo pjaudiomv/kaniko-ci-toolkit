@@ -21,14 +21,22 @@
   "customManagers": [
     {
       "customType": "regex",
-      "managerFilePatterns": [
-        "/^Dockerfile$/"
-      ],
+      "description": "Update GitHub releases in Dockerfile",
+      "managerFilePatterns": ["^Dockerfile$"],
       "matchStrings": [
-        "# renovate: depName=(?<depName>.*?)\\nARG .*?_VERSION=(?<currentValue>.*?)\\n"
+        "# renovate: depName=(?<depName>.*?)\\s+ARG .*?_VERSION=(?<currentValue>.*?)\\s"
       ],
       "datasourceTemplate": "github-releases",
       "versioningTemplate": "semver"
+    },
+    {
+      "customType": "regex",
+      "description": "Update dependencies with custom datasource",
+      "managerFilePatterns": ["^Dockerfile$"],
+      "matchStrings": [
+        "# renovate: datasource=(?<datasource>.*?) depName=(?<depName>.*?)(?: versioning=(?<versioning>.*?))?\\s+ARG .*?_VERSION=(?<currentValue>.*?)\\s"
+      ],
+      "versioningTemplate": "{{#if versioning}}{{{versioning}}}{{else}}semver{{/if}}"
     }
   ]
 }
