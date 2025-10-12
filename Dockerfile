@@ -7,17 +7,17 @@ FROM debian:13.1-slim AS debian
 ARG MAKE_VERSION=4.4
 # https://ftp.gnu.org/gnu/bash/
 ARG BASH_VERSION=5.3
-# renovate: datasource=github-releases depName=jqlang/jq
+# renovate: depName=jqlang/jq
 ARG JQ_VERSION=1.8.1
-# renovate: datasource=github-releases depName=hashicorp/vault
+# renovate: depName=hashicorp/vault
 ARG VAULT_VERSION=1.20.4
-# renovate: datasource=github-releases depName=oras-project/oras
+# renovate: depName=oras-project/oras
 ARG ORAS_VERSION=1.3.0
-# renovate: datasource=github-releases depName=sigstore/cosign
-ARG COSIGN_VERSION=3.0.1
-# renovate: datasource=github-releases depName=estesp/manifest-tool
+# renovate: depName=sigstore/cosign
+ARG COSIGN_VERSION=3.0.2
+# renovate: depName=estesp/manifest-tool
 ARG MANIFEST_TOOL_VERSION=2.2.1
-# renovate: datasource=github-releases depName=google/go-containerregistry
+# renovate: depName=google/go-containerregistry
 ARG CRANE_VERSION=0.20.6
 
 ARG TARGETARCH
