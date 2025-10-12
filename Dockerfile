@@ -4,10 +4,10 @@
 FROM debian:13.1-slim AS debian
 
 # https://ftp.gnu.org/gnu/make/
-# renovate: datasource=repology depName=make versioning=loose
-ARG MAKE_VERSION=4.4
-# https://ftp.gnu.org/gnu/bash/
-# renovate: datasource=repology depName=bash versioning=loose
+# renovate: depName=mirror/make
+ARG MAKE_VERSION=4.4.1
+# https://savannah.gnu.org/git/?group=bash
+# renovate: depName=bminor/bash
 ARG BASH_VERSION=5.3
 # renovate: depName=jqlang/jq
 ARG JQ_VERSION=1.8.1
