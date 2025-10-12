@@ -18,9 +18,12 @@
       ]
     }
   ],
-  "regexManagers": [
+  "customManagers": [
     {
-      "fileMatch": ["^Dockerfile$"],
+      "customType": "regex",
+      "managerFilePatterns": [
+        "/^Dockerfile$/"
+      ],
       "matchStrings": [
         "# renovate: depName=(?<depName>.*?)\\nARG .*?_VERSION=(?<currentValue>.*?)\\n"
       ],
