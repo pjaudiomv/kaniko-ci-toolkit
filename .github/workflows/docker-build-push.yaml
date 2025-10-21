@@ -10,6 +10,8 @@ on:
 permissions:
   contents: read
   packages: write
+  id-token: write
+  security-events: write
 
 jobs:
   build-and-push:
@@ -21,6 +23,9 @@ jobs:
       - name: Get short SHA
         id: short_sha
         run: echo "SHA_SHORT=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+
+      - name: Install Cosign
+        uses: sigstore/cosign-installer@v4.0.0
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
@@ -80,3 +85,28 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           annotations: ${{ steps.meta.outputs.annotations }}
           platforms: linux/amd64,linux/arm64/v8
+
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@0.33.1
+        if: github.event_name != 'pull_request'
+        with:
+          image-ref: 'ghcr.io/pjaudiomv/kaniko-ci-toolkit@${{ steps.build.outputs.digest }}'
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+      - name: Upload Trivy results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v4
+        if: github.event_name != 'pull_request'
+        with:
+          sarif_file: 'trivy-results.sarif'
+
+      - name: Sign images with Cosign
+        if: github.event_name != 'pull_request'
+        env:
+          DIGEST: ${{ steps.build.outputs.digest }}
+          TAGS: ${{ steps.meta.outputs.tags }}
+        run: |
+          images=""
+          for tag in ${TAGS}; do
+            images+="${tag}@${DIGEST} "
+          done
+          cosign sign --yes ${images}
