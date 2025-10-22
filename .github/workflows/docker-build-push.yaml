@@ -92,8 +92,7 @@ jobs:
         if: github.event_name != 'pull_request'
         with:
           image-ref: 'ghcr.io/pjaudiomv/kaniko-ci-toolkit@${{ steps.build.outputs.digest }}'
-          format: 'template'
-          template: '@/contrib/sarif.tpl'
+          format: 'sarif'
           output: 'trivy-results.sarif'
           severity: 'CRITICAL,HIGH'
       - name: Upload Trivy results to GitHub Security tab
