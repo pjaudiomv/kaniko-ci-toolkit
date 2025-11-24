@@ -86,3 +86,15 @@ jobs:
           docker run --rm kaniko-ci-toolkit:test /kaniko/executor version
           
           echo -e "\nAll tests passed!"
+
+      - name: Approve PR
+        if: github.actor == 'renovate[bot]'
+        run: gh pr review ${{ github.event.pull_request.number }} --approve
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Merge PR
+        if: github.actor == 'renovate[bot]'
+        run: gh pr merge ${{ github.event.pull_request.number }} --merge
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
