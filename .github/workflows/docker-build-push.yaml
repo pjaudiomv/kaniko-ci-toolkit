@@ -86,6 +86,8 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           annotations: ${{ steps.meta.outputs.annotations }}
           platforms: linux/amd64,linux/arm64/v8
+          cache-from: type=registry,ref=ghcr.io/pjaudiomv/kaniko-ci-toolkit:buildcache
+          cache-to: type=registry,ref=ghcr.io/pjaudiomv/kaniko-ci-toolkit:buildcache,mode=max
 
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@0.33.1
