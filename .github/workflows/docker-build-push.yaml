@@ -91,7 +91,7 @@ jobs:
           cache-to: type=registry,ref=ghcr.io/pjaudiomv/kaniko-ci-toolkit:buildcache,mode=max
 
       - name: Run Trivy vulnerability scanner
-        uses: aquasecurity/trivy-action@0.33.1
+        uses: aquasecurity/trivy-action@0.34.0
         if: github.event_name != 'pull_request'
         with:
           image-ref: 'ghcr.io/pjaudiomv/kaniko-ci-toolkit@${{ steps.build.outputs.digest }}'
