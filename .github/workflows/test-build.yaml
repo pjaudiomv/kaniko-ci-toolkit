@@ -27,7 +27,7 @@ jobs:
           install: true
 
       - name: Test multi-platform build
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           context: .
           file: ./Dockerfile
@@ -38,7 +38,7 @@ jobs:
           cache-to: type=gha,mode=max
 
       - name: Build and load image for testing
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           context: .
           file: ./Dockerfile
