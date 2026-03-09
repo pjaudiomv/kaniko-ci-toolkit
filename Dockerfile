@@ -20,7 +20,7 @@ ARG COSIGN_VERSION=3.0.5
 # renovate: depName=estesp/manifest-tool
 ARG MANIFEST_TOOL_VERSION=2.2.1
 # renovate: depName=google/go-containerregistry
-ARG CRANE_VERSION=0.21.1
+ARG CRANE_VERSION=0.21.2
 
 ARG TARGETARCH
 
