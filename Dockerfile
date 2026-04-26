@@ -58,40 +58,35 @@ RUN ./configure CFLAGS="-static" \
 WORKDIR /usr/local/src
 RUN rm -rf bash-${BASH_VERSION}
 
-RUN ARCH=$(if [ "$TARGETARCH" = "arm64" ] || [ "$TARGETARCH" = "aarch64" ]; then echo "arm64"; else echo "amd64"; fi) && \
-    wget --progress=dot:giga "https://github.com/jqlang/jq/releases/download/jq-${JQ_VERSION}/jq-linux-${ARCH}" -O /usr/bin/jq && \
+RUN wget --progress=dot:giga "https://github.com/jqlang/jq/releases/download/jq-${JQ_VERSION}/jq-linux-${TARGETARCH}" -O /usr/bin/jq && \
     chmod a+x /usr/bin/jq
 
-RUN ARCH=$(if [ "$TARGETARCH" = "arm64" ] || [ "$TARGETARCH" = "aarch64" ]; then echo "arm64"; else echo "amd64"; fi) && \
-    wget --progress=dot:giga "https://releases.hashicorp.com/vault/${VAULT_VERSION}/vault_${VAULT_VERSION}_linux_${ARCH}.zip" -O /tmp/vault.zip && \
+RUN wget --progress=dot:giga "https://releases.hashicorp.com/vault/${VAULT_VERSION}/vault_${VAULT_VERSION}_linux_${TARGETARCH}.zip" -O /tmp/vault.zip && \
     unzip /tmp/vault.zip -d /tmp && \
     rm /tmp/vault.zip && \
     mv /tmp/vault /usr/bin/vault && \
     chmod +x /usr/bin/vault
 
-RUN ARCH=$(if [ "$TARGETARCH" = "arm64" ] || [ "$TARGETARCH" = "aarch64" ]; then echo "arm64"; else echo "amd64"; fi) && \
-    wget --progress=dot:giga "https://github.com/estesp/manifest-tool/releases/download/v${MANIFEST_TOOL_VERSION}/binaries-manifest-tool-${MANIFEST_TOOL_VERSION}.tar.gz" -O /tmp/manifest-tool.tar.gz && \
+RUN wget --progress=dot:giga "https://github.com/estesp/manifest-tool/releases/download/v${MANIFEST_TOOL_VERSION}/binaries-manifest-tool-${MANIFEST_TOOL_VERSION}.tar.gz" -O /tmp/manifest-tool.tar.gz && \
     tar xzf /tmp/manifest-tool.tar.gz -C /tmp && \
-    mv "/tmp/manifest-tool-linux-${ARCH}" /usr/bin/manifest-tool && \
+    mv "/tmp/manifest-tool-linux-${TARGETARCH}" /usr/bin/manifest-tool && \
     chmod +x /usr/bin/manifest-tool && \
     rm -rf /tmp/*
 
-RUN ARCH=$(if [ "$TARGETARCH" = "arm64" ] || [ "$TARGETARCH" = "aarch64" ]; then echo "arm64"; else echo "amd64"; fi) && \
-    wget --progress=dot:giga "https://github.com/oras-project/oras/releases/download/v${ORAS_VERSION}/oras_${ORAS_VERSION}_linux_${ARCH}.tar.gz" -O /tmp/oras.tar.gz && \
+RUN wget --progress=dot:giga "https://github.com/oras-project/oras/releases/download/v${ORAS_VERSION}/oras_${ORAS_VERSION}_linux_${TARGETARCH}.tar.gz" -O /tmp/oras.tar.gz && \
     tar xzf /tmp/oras.tar.gz -C /tmp && \
     mv /tmp/oras /usr/bin/oras && \
     chmod +x /usr/bin/oras && \
     rm -rf /tmp/*
 
-RUN ARCH=$(if [ "$TARGETARCH" = "arm64" ] || [ "$TARGETARCH" = "aarch64" ]; then echo "arm64"; else echo "x86_64"; fi) && \
+RUN ARCH=$([ "$TARGETARCH" = "amd64" ] && echo x86_64 || echo "$TARGETARCH") && \
     wget --progress=dot:giga "https://github.com/google/go-containerregistry/releases/download/v${CRANE_VERSION}/go-containerregistry_Linux_${ARCH}.tar.gz" -O /tmp/crane.tar.gz && \
     tar xzf /tmp/crane.tar.gz -C /tmp && \
     mv /tmp/crane /usr/bin/crane && \
     chmod +x /usr/bin/crane && \
     rm -rf /tmp/*
 
-RUN ARCH=$(if [ "$TARGETARCH" = "arm64" ] || [ "$TARGETARCH" = "aarch64" ]; then echo "arm64"; else echo "amd64"; fi) && \
-    wget --progress=dot:giga "https://github.com/sigstore/cosign/releases/download/v${COSIGN_VERSION}/cosign-linux-${ARCH}" -O /usr/bin/cosign && \
+RUN wget --progress=dot:giga "https://github.com/sigstore/cosign/releases/download/v${COSIGN_VERSION}/cosign-linux-${TARGETARCH}" -O /usr/bin/cosign && \
     chmod +x /usr/bin/cosign
 
 # Kaniko
