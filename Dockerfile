@@ -1,5 +1,5 @@
 # Kaniko Image with
-#   - Crane, Cosign, Manifest-Tool, Oras, Make, JQ, Bash, Vault
+#   - Crane, Cosign, Oras, Make, JQ, Bash, Vault
 # renovate: datasource=docker depName=debian
 FROM debian:13.4-slim AS debian
 
@@ -17,8 +17,6 @@ ARG VAULT_VERSION=2.0.0
 ARG ORAS_VERSION=1.3.2
 # renovate: depName=sigstore/cosign
 ARG COSIGN_VERSION=3.0.6
-# renovate: depName=estesp/manifest-tool
-ARG MANIFEST_TOOL_VERSION=2.2.1
 # renovate: depName=google/go-containerregistry
 ARG CRANE_VERSION=0.21.5
 
@@ -67,12 +65,6 @@ RUN wget --progress=dot:giga "https://releases.hashicorp.com/vault/${VAULT_VERSI
     mv /tmp/vault /usr/bin/vault && \
     chmod +x /usr/bin/vault
 
-RUN wget --progress=dot:giga "https://github.com/estesp/manifest-tool/releases/download/v${MANIFEST_TOOL_VERSION}/binaries-manifest-tool-${MANIFEST_TOOL_VERSION}.tar.gz" -O /tmp/manifest-tool.tar.gz && \
-    tar xzf /tmp/manifest-tool.tar.gz -C /tmp && \
-    mv "/tmp/manifest-tool-linux-${TARGETARCH}" /usr/bin/manifest-tool && \
-    chmod +x /usr/bin/manifest-tool && \
-    rm -rf /tmp/*
-
 RUN wget --progress=dot:giga "https://github.com/oras-project/oras/releases/download/v${ORAS_VERSION}/oras_${ORAS_VERSION}_linux_${TARGETARCH}.tar.gz" -O /tmp/oras.tar.gz && \
     tar xzf /tmp/oras.tar.gz -C /tmp && \
     mv /tmp/oras /usr/bin/oras && \
@@ -96,7 +88,6 @@ FROM docker.io/martizih/kaniko:v1.27.3-debug
 COPY --from=debian /usr/bin/crane /busybox/crane
 COPY --from=debian /usr/bin/jq /busybox/jq
 COPY --from=debian /usr/bin/vault /busybox/vault
-COPY --from=debian /usr/bin/manifest-tool /busybox/manifest-tool
 COPY --from=debian /usr/bin/cosign /busybox/cosign
 COPY --from=debian /usr/bin/oras /busybox/oras
 COPY --from=debian /usr/local/bin/make /busybox/make
@@ -108,5 +99,5 @@ ENV PATH="/busybox:/bin:${PATH}"
 ENTRYPOINT []
 
 LABEL org.opencontainers.image.source="https://github.com/pjaudiomv/kaniko-ci-toolkit" \
-      org.opencontainers.image.description="Kaniko with Crane, Cosign, Manifest-Tool, ORAS, Make, jq, Bash, Vault" \
+      org.opencontainers.image.description="Kaniko with Crane, Cosign, ORAS, Make, jq, Bash, Vault" \
       maintainer="Patrick Joyce <pjaudiomv@gmail.com>"

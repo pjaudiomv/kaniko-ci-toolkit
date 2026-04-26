@@ -1,6 +1,6 @@
 # Kaniko CI Toolkit
 
-A Kaniko-powered CI build image preloaded with essential container tools: Crane, Cosign, Manifest Tool, ORAS, Make, JQ, Bash, and Vault.
+A Kaniko-powered CI build image preloaded with essential container tools: Crane, Cosign, ORAS, Make, JQ, Bash, and Vault.
 
 ## Features
 
@@ -81,7 +81,6 @@ The image includes the following tools:
 - [Kaniko](https://github.com/GoogleContainerTools/kaniko) - Build container images inside a container without privileged mode
 - [Crane](https://github.com/google/go-containerregistry/tree/main/cmd/crane) - Tool for interacting with remote container registries
 - [Cosign](https://github.com/sigstore/cosign) - Container signing, verification, and storage in an OCI registry
-- [Manifest Tool](https://github.com/estesp/manifest-tool) - Tool for creating and pushing manifest lists for multi-architecture images
 - [ORAS](https://github.com/oras-project/oras) - OCI Registry As Storage for artifacts
 - [Make](https://www.gnu.org/software/make/) - Build automation tool
 - [JQ](https://github.com/jqlang/jq) - Lightweight and flexible command-line JSON processor
@@ -95,7 +94,6 @@ All tools are available in the `/busybox` directory:
 ```
 /busybox/crane
 /busybox/cosign
-/busybox/manifest-tool
 /busybox/oras
 /busybox/make
 /busybox/jq
@@ -196,12 +194,13 @@ jobs:
           docker run --rm \
             -v "$PWD:/workspace" \
             -v "$PWD/.docker:/kaniko/.docker" \
+            -e DOCKER_CONFIG=/kaniko/.docker \
             -w /workspace \
             ghcr.io/pjaudiomv/kaniko-ci-toolkit:1.0.0 \
-            /busybox/manifest-tool push from-args \
-              --platforms linux/amd64,linux/arm64 \
-              --template "docker.io/pjaudiomv/nginx-test:${{ needs.prepare.outputs.tag }}-ARCH" \
-              --target "docker.io/pjaudiomv/nginx-test:${{ needs.prepare.outputs.tag }}"
+            /busybox/crane index append \
+              -m "docker.io/pjaudiomv/nginx-test:${{ needs.prepare.outputs.tag }}-amd64" \
+              -m "docker.io/pjaudiomv/nginx-test:${{ needs.prepare.outputs.tag }}-arm64" \
+              -t "docker.io/pjaudiomv/nginx-test:${{ needs.prepare.outputs.tag }}"
 ```
 
 This workflow demonstrates:
@@ -210,7 +209,7 @@ This workflow demonstrates:
 2. **Multi-Architecture Builds**: Builds images for both amd64 and arm64 architectures
 3. **Docker Registry Authentication**: Sets up authentication for Docker Hub
 4. **Kaniko Image Building**: Uses the kaniko-ci-toolkit to build and push architecture-specific images
-5. **Multi-Architecture Manifest**: Creates and pushes a multi-architecture manifest using manifest-tool
+5. **Multi-Architecture Manifest**: Creates and pushes a multi-architecture manifest using `crane index append`
 
 You can use this workflow as a template for your own projects, adjusting the Dockerfile path, destination registry, and other parameters as needed.
 
@@ -278,14 +277,16 @@ manifest:
     - prepare
     - build-amd64
     - build-arm64
+  variables:
+    DOCKER_CONFIG: $CI_PROJECT_DIR/.docker
   script:
     - mkdir -p .docker
     - echo "{\"auths\":{\"https://index.docker.io/v1/\":{\"auth\":\"$(echo -n "${DOCKERHUB_USERNAME}:${DOCKERHUB_TOKEN}" | base64)\"}}}" > .docker/config.json
     - |
-      manifest-tool push from-args \
-          --platforms linux/amd64,linux/arm64 \
-          --template "$DOCKER_REGISTRY/$DOCKER_IMAGE:$TAG-ARCH" \
-          --target "$DOCKER_REGISTRY/$DOCKER_IMAGE:$TAG"
+      crane index append \
+          -m "$DOCKER_REGISTRY/$DOCKER_IMAGE:$TAG-amd64" \
+          -m "$DOCKER_REGISTRY/$DOCKER_IMAGE:$TAG-arm64" \
+          -t "$DOCKER_REGISTRY/$DOCKER_IMAGE:$TAG"
   only:
     - tags
 

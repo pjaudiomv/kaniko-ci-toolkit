@@ -71,9 +71,10 @@ jobs:
           docker run --rm \
             -v "$PWD:/workspace" \
             -v "$PWD/.docker:/kaniko/.docker" \
+            -e DOCKER_CONFIG=/kaniko/.docker \
             -w /workspace \
             ghcr.io/pjaudiomv/kaniko-ci-toolkit:1.0.0 \
-            /busybox/manifest-tool push from-args \
-              --platforms linux/amd64,linux/arm64 \
-              --template "docker.io/pjaudiomv/nginx-test:${{ needs.prepare.outputs.tag }}-ARCH" \
-              --target "docker.io/pjaudiomv/nginx-test:${{ needs.prepare.outputs.tag }}"
+            /busybox/crane index append \
+              -m "docker.io/pjaudiomv/nginx-test:${{ needs.prepare.outputs.tag }}-amd64" \
+              -m "docker.io/pjaudiomv/nginx-test:${{ needs.prepare.outputs.tag }}-arm64" \
+              -t "docker.io/pjaudiomv/nginx-test:${{ needs.prepare.outputs.tag }}"

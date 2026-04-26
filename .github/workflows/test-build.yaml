@@ -73,9 +73,6 @@ jobs:
           echo -e "\nTesting Vault..."
           docker run --rm kaniko-ci-toolkit:test /busybox/vault version
           
-          echo -e "\nTesting Manifest-Tool..."
-          docker run --rm kaniko-ci-toolkit:test /busybox/manifest-tool --version
-          
           echo -e "\nTesting Cosign..."
           docker run --rm kaniko-ci-toolkit:test /busybox/cosign version
           
