@@ -87,7 +87,7 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
 
       - name: Run Trivy vulnerability scanner
-        uses: aquasecurity/trivy-action@0.36.0
+        uses: aquasecurity/trivy-action@v0.36.0
         if: github.event_name != 'pull_request'
         with:
           image-ref: 'ghcr.io/pjaudiomv/kaniko-ci-toolkit@${{ fromJSON(steps.build.outputs.metadata).toolkit[''containerimage.digest''] }}'
