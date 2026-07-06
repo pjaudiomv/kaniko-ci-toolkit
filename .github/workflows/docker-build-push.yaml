@@ -78,23 +78,19 @@ jobs:
 
       - name: Build and push Docker image
         id: build
-        uses: docker/build-push-action@v7
+        uses: docker/bake-action@v6
         with:
-          context: .
-          file: ./Dockerfile
+          files: |
+            ./docker-bake.hcl
+            cwd://${{ steps.meta.outputs.bake-file }}
+          targets: toolkit
           push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-          annotations: ${{ steps.meta.outputs.annotations }}
-          platforms: linux/amd64,linux/arm64/v8
-          cache-from: type=registry,ref=ghcr.io/pjaudiomv/kaniko-ci-toolkit:buildcache
-          cache-to: type=registry,ref=ghcr.io/pjaudiomv/kaniko-ci-toolkit:buildcache,mode=max
 
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@0.36.0
         if: github.event_name != 'pull_request'
         with:
-          image-ref: 'ghcr.io/pjaudiomv/kaniko-ci-toolkit@${{ steps.build.outputs.digest }}'
+          image-ref: 'ghcr.io/pjaudiomv/kaniko-ci-toolkit@${{ fromJSON(steps.build.outputs.metadata).toolkit[''containerimage.digest''] }}'
           format: 'sarif'
           output: 'trivy-results.sarif'
           severity: 'CRITICAL,HIGH'
@@ -107,7 +103,7 @@ jobs:
       - name: Sign images with Cosign
         if: github.event_name != 'pull_request'
         env:
-          DIGEST: ${{ steps.build.outputs.digest }}
+          DIGEST: ${{ fromJSON(steps.build.outputs.metadata).toolkit['containerimage.digest'] }}
           TAGS: ${{ steps.meta.outputs.tags }}
         run: |
           images=""
