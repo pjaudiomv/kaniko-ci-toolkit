@@ -9,7 +9,7 @@ ARG MAKE_VERSION=4.4.1
 # https://ftp.gnu.org/gnu/bash/
 # renovate: datasource=github-tags depName=mirror/bash extractVersion=^bash-(?<version>.*)$
 ARG BASH_VERSION=5.3
-# renovate: depName=jqlang/jq
+# renovate: datasource=github-releases depName=jqlang/jq extractVersion=^jq-(?<version>.*)$
 ARG JQ_VERSION=1.8.1
 # renovate: depName=hashicorp/vault
 ARG VAULT_VERSION=2.0.3
