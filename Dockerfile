@@ -12,7 +12,7 @@ ARG BASH_VERSION=5.3
 # renovate: datasource=github-releases depName=jqlang/jq extractVersion=^jq-(?<version>.*)$
 ARG JQ_VERSION=1.8.1
 # renovate: depName=hashicorp/vault
-ARG VAULT_VERSION=2.0.3
+ARG VAULT_VERSION=2.0.4
 # renovate: depName=oras-project/oras
 ARG ORAS_VERSION=1.3.3
 # renovate: depName=sigstore/cosign
