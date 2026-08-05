@@ -10,7 +10,7 @@ ARG MAKE_VERSION=4.4.1
 # renovate: datasource=github-tags depName=mirror/bash extractVersion=^bash-(?<version>.*)$
 ARG BASH_VERSION=5.3
 # renovate: datasource=github-releases depName=jqlang/jq extractVersion=^jq-(?<version>.*)$
-ARG JQ_VERSION=1.8.1
+ARG JQ_VERSION=1.8.2
 # renovate: depName=hashicorp/vault
 ARG VAULT_VERSION=2.0.4
 # renovate: depName=oras-project/oras
