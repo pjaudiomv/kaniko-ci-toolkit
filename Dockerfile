@@ -16,7 +16,7 @@ ARG VAULT_VERSION=2.0.4
 # renovate: depName=oras-project/oras
 ARG ORAS_VERSION=1.3.3
 # renovate: depName=sigstore/cosign
-ARG COSIGN_VERSION=3.1.2
+ARG COSIGN_VERSION=3.1.3
 # renovate: depName=google/go-containerregistry
 ARG CRANE_VERSION=0.21.8
 
