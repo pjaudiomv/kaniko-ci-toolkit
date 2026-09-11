@@ -18,7 +18,7 @@ ARG ORAS_VERSION=1.3.4
 # renovate: depName=sigstore/cosign
 ARG COSIGN_VERSION=3.1.3
 # renovate: depName=google/go-containerregistry
-ARG CRANE_VERSION=0.22.0
+ARG CRANE_VERSION=0.22.1
 
 ARG TARGETARCH
 
