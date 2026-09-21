@@ -1,7 +1,7 @@
 # Kaniko Image with
 #   - Crane, Cosign, Oras, Make, JQ, Bash, Vault
 # renovate: datasource=docker depName=debian
-FROM debian:13.6-slim AS debian
+FROM debian:13.7-slim AS debian
 
 # https://ftp.gnu.org/gnu/make/
 # renovate: depName=mirror/make
