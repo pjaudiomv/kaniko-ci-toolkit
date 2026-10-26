@@ -83,7 +83,7 @@ RUN wget --progress=dot:giga "https://github.com/sigstore/cosign/releases/downlo
 
 # Kaniko
 # renovate: datasource=docker depName=martizih/kaniko
-FROM docker.io/martizih/kaniko:v1.28.6-debug
+FROM docker.io/martizih/kaniko:v1.29.0-debug
 
 COPY --from=debian /usr/bin/crane /busybox/crane
 COPY --from=debian /usr/bin/jq /busybox/jq
